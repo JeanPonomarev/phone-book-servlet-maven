@@ -1,10 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/phonebook.css"/>
     <title>Phone Book Servlet Maven</title>
 </head>
+
 <body>
-    <h1>Start page</h1>
+    <div id="app" class="container">
+        <div class="delete-dialog"></div>
+
+        <div class="alert" title="No selected contacts"></div>
+
+        <div class="filter-container">
+            <label class="mr-1">
+                Write text:
+                <input type="text" class="form-control input-sm">
+            </label>
+
+            <button type="button" class="btn btn-primary">Filter</button>
+            <button type="button" class="btn btn-primary">Reset filter</button>
+        </div>
+
+        <table class="table table-bordered contact-table">
+            <thead>
+                <tr>
+                    <th>
+                        <label class="select-all-label">
+                            <input type="checkbox" title="Choose">
+                        </label>
+                    </th>
+                    <th>№</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Phone number</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr v-cloak v-for="contact in contacts">
+                    <template v-if="contact.shown">
+                        <td>
+                            <label class="select-me-label">
+                                <input type="checkbox" class="select-me">
+                            </label>
+                        </td>
+                        <td v-text="contact.number"></td>
+                        <td v-text="contact.firstName"></td>
+                        <td v-text="contact.lastName"></td>
+                        <td v-text="contact.phoneNumber"></td>
+                        <td>
+                            <button type="button" class="btn btn-danger" @click="deleteContact">Delete</button>
+                        </td>
+                    </template>
+                </tr>
+            </tbody>
+        </table>
+
+        <button type="button" class="btn btn-danger">Delete selected</button>
+
+        <br>
+
+        <div class="server-error-message-container">
+            <span v-show="serverValidation" v-text="serverError"></span>
+        </div>
+
+        <form class="form">
+            <div>
+                <label class="form-label">
+                    <span class="form-field">First name:</span>
+                    <input type="text" class="form-control input-sm form-input ml-1"
+                           v-model="firstName"
+                           v-bind:class="{ 'input-error': firstNameError.error && clientValidation }"/>
+                    <span v-show="clientValidation" class="error-message" v-text="firstNameError.message"></span>
+                </label>
+            </div>
+
+            <div>
+                <label class="form-label">
+                    <span class="form-field">Last name:</span>
+                    <input type="text" class="form-control input-sm form-input ml-1"
+                            v-model="lastName"
+                            v-bind:class="{ 'input-error': lastNameError.error && clientValidation }"/>
+                    <span v-show="clientValidation" class="error-message" v-text="lastNameError.message"></span>
+                </label>
+            </div>
+
+            <div>
+                <label class="form-label">
+                    <span class="form-field">Phone number:</span>
+                    <input type="text" class="form-control input-sm form-input ml-1"
+                           v-model="phoneNumber"
+                           v-bind:class="{ 'input-error': phoneNumberError.error && clientValidation }"/>
+                    <span v-show="clientValidation" class="error-message" v-text="phoneNumberError.message"></span>
+                </label>
+            </div>
+
+            <button type="button" class="btn btn-success" @click="addContact">Add contact</button>
+        </form>
+    </div>
+
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/bootstrap.bundle.js"></script>
+    <script src="js/libs/vue.js"></script>
+    <script src="js/phoneBook.js"></script>
 </body>
 </html>
