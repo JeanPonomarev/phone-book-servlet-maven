@@ -5,6 +5,7 @@ import ru.jeanponomarev.model.Contact;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class ContactDao {
     private final List<Contact> contactList = new ArrayList<Contact>();
@@ -44,6 +45,16 @@ public class ContactDao {
 
     public List<Contact> getAllContacts() {
         return contactList;
+    }
+
+    public List<Contact> getFilteredContacts(String targetContactParameter) {
+        return contactList
+                .stream()
+                .filter(
+                        contact -> contact.getFirstName().equals(targetContactParameter) ||
+                                contact.getLastName().equals(targetContactParameter) ||
+                                contact.getPhoneNumber().equals(targetContactParameter))
+                .collect(Collectors.toList());
     }
 
     public void addContact(Contact contact) {

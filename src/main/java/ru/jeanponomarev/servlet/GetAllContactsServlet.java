@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class GetAllContactsServlet extends HttpServlet {
@@ -20,11 +20,19 @@ public class GetAllContactsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try (OutputStream outputStream = response.getOutputStream()) {
-            List<Contact> contactList = contactService.getAllContacts();
+            List<Contact> contactList;
+
+            String targetContactParameter = request.getParameter("term");
+
+            if (targetContactParameter == null || targetContactParameter.isEmpty()) {
+                contactList = contactService.getAllContacts();
+            } else {
+                contactList = contactService.getFilteredContacts(targetContactParameter);
+            }
 
             String contactListJson = contactConverter.convertToJson(contactList);
 
-            outputStream.write(contactListJson.getBytes(Charset.forName("UTF-8")));
+            outputStream.write(contactListJson.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             System.out.println("error in GetAllContactsServlet GET: ");
             e.printStackTrace();

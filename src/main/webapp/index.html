@@ -19,12 +19,12 @@
 
         <div class="filter-container">
             <label class="mr-1">
-                Write text:
-                <input type="text" class="form-control input-sm">
+                Search a contact:
+                <input type="text" class="form-control input-sm" v-model="term">
             </label>
 
-            <button type="button" class="btn btn-primary">Filter</button>
-            <button type="button" class="btn btn-primary">Reset filter</button>
+            <button type="button" class="btn btn-primary" @click="loadData">Filter</button>
+            <button type="button" class="btn btn-primary" @click="resetFilter">Reset filter</button>
         </div>
 
         <table class="table table-bordered contact-table">

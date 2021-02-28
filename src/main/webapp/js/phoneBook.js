@@ -14,6 +14,7 @@ new Vue({
         phoneNumber: "",
         contacts: [],
         selectedContacts: [],
+        term: "",
 
         clientValidation: false,
         serverValidation: false,
@@ -47,10 +48,14 @@ new Vue({
         loadData() {
             const self = this;
 
-            $.get("/api/getContacts")
+            const term = this.term;
+
+            $.get("/api/getContacts", { term })
                 .done(function (response) {
                 const contactListFromServer = JSON.parse(response);
                 self.contacts = self.convertContactList(contactListFromServer)
+            }).fail(function () {
+                alert("Failed to load contacts' list");
             });
         },
 
@@ -126,6 +131,11 @@ new Vue({
             }).always(function () {
                 self.loadData();
             });
+        },
+
+        resetFilter() {
+            this.term = "";
+            this.loadData();
         }
     },
 

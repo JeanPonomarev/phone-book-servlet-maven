@@ -67,6 +67,10 @@ public class ContactService {
         return contactDao.getAllContacts();
     }
 
+    public List<Contact> getFilteredContacts(String targetContactParameter) {
+        return contactDao.getFilteredContacts(targetContactParameter);
+    }
+
     public void deleteContact(Contact targetContact) {
         contactDao.deleteContact(targetContact);
     }
