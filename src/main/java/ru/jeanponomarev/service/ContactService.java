@@ -7,8 +7,7 @@ import ru.jeanponomarev.model.Contact;
 import java.util.List;
 
 public class ContactService {
-
-    private ContactDao contactDao = PhoneBook.contactDao;
+    private final ContactDao contactDao = PhoneBook.contactDao;
 
     private boolean isExistContactWithPhoneNumber(final String phoneNumber) {
         List<Contact> contactList = contactDao.getAllContacts();
@@ -58,7 +57,7 @@ public class ContactService {
         ContactValidation contactValidation = validateContact(contact);
 
         if (contactValidation.isValid()) {
-            contactDao.add(contact);
+            contactDao.addContact(contact);
         }
 
         return contactValidation;
@@ -66,5 +65,13 @@ public class ContactService {
 
     public List<Contact> getAllContacts() {
         return contactDao.getAllContacts();
+    }
+
+    public void deleteContact(Contact targetContact) {
+        contactDao.deleteContact(targetContact);
+    }
+
+    public void deleteContactList(List<Contact> targetContacts) {
+        contactDao.deleteContactList(targetContacts);
     }
 }

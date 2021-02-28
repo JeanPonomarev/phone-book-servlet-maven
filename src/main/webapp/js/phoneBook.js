@@ -1,22 +1,19 @@
-// Конструктор
 function Contact(firstName, lastName, phoneNumber) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.phoneNumber = phoneNumber;
-    this.checked = false;
     this.shown = true;
 }
 
 new Vue({
-    // привязываем компонент к DOM-элементу
     el: "#app",
 
-    // данные компонента: контакт и валидация
     data: {
         firstName: "",
         lastName: "",
         phoneNumber: "",
         contacts: [],
+        selectedContacts: [],
 
         clientValidation: false,
         serverValidation: false,
@@ -24,7 +21,6 @@ new Vue({
     },
 
     methods: {
-        // Конвертация js объекта contact в String
         contactToString: function (contact) {
             let note = "(";
             note += contact.firstName + ", ";
@@ -35,7 +31,6 @@ new Vue({
             return note;
         },
 
-        // Конвертация серверного объекта contact в клиентский объект contact
         convertContactList: function (contactListFromServer) {
             return contactListFromServer.map(function (contact, i) {
                 return {
@@ -43,26 +38,23 @@ new Vue({
                     firstName: contact.firstName,
                     lastName: contact.lastName,
                     phoneNumber: contact.phoneNumber,
-                    checked: false,
                     shown: true,
                     number: i + 1
                 };
             });
         },
 
-        // Заграузка и парсинг данных с сервера
-        loadData: function () {
+        loadData() {
             const self = this;
 
-            $.get("/api/getContacts").done(function (response) {
+            $.get("/api/getContacts")
+                .done(function (response) {
                 const contactListFromServer = JSON.parse(response);
                 self.contacts = self.convertContactList(contactListFromServer)
             });
         },
 
-        // Добавление контакта
-        addContact: function () {
-
+        addContact() {
             if (this.hasError) {
                 this.clientValidation = true;
                 this.serverValidation = false;
@@ -94,12 +86,72 @@ new Vue({
             self.clientValidation = false;
         },
 
-        deleteContact: function () {
+        deleteContact(contact) {
+            const self = this;
 
+            $.ajax({
+                type:"POST",
+                url: "/api/deleteContact",
+                data: JSON.stringify(contact)
+            }).done(function () {
+                self.serverValidation = false;
+            }).fail(function (ajaxRequest) {
+                const contactValidation = JSON.parse(ajaxRequest.responseText);
+                self.serverError = contactValidation.error;
+                self.serverValidation = true;
+            }).always(function () {
+                self.loadData();
+            });
+        },
+
+        deleteContactList() {
+            if (this.selectedContacts.length === 0) {
+                alert("No contacts selected");
+                return;
+            }
+
+            const self = this;
+
+            $.ajax({
+                type:"POST",
+                url: "/api/deleteContactList",
+                data: JSON.stringify(self.selectedContacts)
+            }).done(function () {
+                self.serverValidation = false;
+                self.selectedContacts = [];
+            }).fail(function (ajaxRequest) {
+                const contactValidation = JSON.parse(ajaxRequest.responseText);
+                self.serverError = contactValidation.error;
+                self.serverValidation = true;
+            }).always(function () {
+                self.loadData();
+            });
         }
     },
 
     computed: {
+        selectAll: {
+            get: function () {
+                if (this.contacts.length === 0) {
+                    return false;
+                }
+
+                return this.contacts ? this.selectedContacts.length === this.contacts.length : false;
+            },
+
+            set: function (value) {
+                let selectedContacts = [];
+
+                if (value) {
+                    this.contacts.forEach(function (contact) {
+                        selectedContacts.push(contact);
+                    })
+                }
+
+                this.selectedContacts = selectedContacts;
+            }
+        },
+
         firstNameError: function () {
             if (!this.firstName) {
                 return {
@@ -109,7 +161,6 @@ new Vue({
             }
 
             return {
-                message: "Success",
                 error: false
             };
         },
@@ -123,7 +174,6 @@ new Vue({
             }
 
             return {
-                message: "Success",
                 error: false
             };
         },
@@ -150,7 +200,6 @@ new Vue({
             }
 
             return {
-                message: "Success",
                 error: false
             };
         },

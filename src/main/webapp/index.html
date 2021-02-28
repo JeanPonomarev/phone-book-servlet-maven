@@ -32,7 +32,7 @@
                 <tr>
                     <th>
                         <label class="select-all-label">
-                            <input type="checkbox" title="Choose">
+                            <input type="checkbox" title="Select all" v-model="selectAll" ref="select-all">
                         </label>
                     </th>
                     <th>№</th>
@@ -48,7 +48,7 @@
                     <template v-if="contact.shown">
                         <td>
                             <label class="select-me-label">
-                                <input type="checkbox" class="select-me">
+                                <input type="checkbox" class="select-me" :value="contact" v-model="selectedContacts">
                             </label>
                         </td>
                         <td v-text="contact.number"></td>
@@ -56,14 +56,14 @@
                         <td v-text="contact.lastName"></td>
                         <td v-text="contact.phoneNumber"></td>
                         <td>
-                            <button type="button" class="btn btn-danger" @click="deleteContact">Delete</button>
+                            <button type="button" class="btn btn-danger" @click="deleteContact(contact)">Delete</button>
                         </td>
                     </template>
                 </tr>
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-danger">Delete selected</button>
+        <button type="button" class="btn btn-danger" @click="deleteContactList()">Delete selected</button>
 
         <br>
 

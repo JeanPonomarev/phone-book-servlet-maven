@@ -13,11 +13,10 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 public class GetAllContactsServlet extends HttpServlet {
-
     private static final long serialVersionUID = 2838716451909659163L;
 
-    private ContactService contactService = PhoneBook.contactService;
-    private ContactConverter contactConverter = PhoneBook.contactConverter;
+    private final ContactService contactService = PhoneBook.contactService;
+    private final ContactConverter contactConverter = PhoneBook.contactConverter;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try (OutputStream outputStream = response.getOutputStream()) {

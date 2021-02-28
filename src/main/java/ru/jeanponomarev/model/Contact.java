@@ -1,5 +1,7 @@
 package ru.jeanponomarev.model;
 
+import java.util.Objects;
+
 public class Contact {
     private int id;
     private String firstName;
@@ -45,5 +47,22 @@ public class Contact {
 
     public void setImportant(boolean important) {
         isImportant = important;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contact contact = (Contact) o;
+        return id == contact.id &&
+                isImportant == contact.isImportant &&
+                firstName.equals(contact.firstName) &&
+                lastName.equals(contact.lastName) &&
+                phoneNumber.equals(contact.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, phoneNumber, isImportant);
     }
 }

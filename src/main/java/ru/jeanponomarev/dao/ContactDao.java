@@ -7,17 +7,35 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ContactDao {
-    private List<Contact> contactList = new ArrayList<Contact>();
-    private AtomicInteger idSequence = new AtomicInteger(0);
+    private final List<Contact> contactList = new ArrayList<Contact>();
+    private final AtomicInteger idSequence = new AtomicInteger(0);
 
     public ContactDao() {
-        Contact contact = new Contact();
-        contact.setId(getNewId());
-        contact.setFirstName("Jean");
-        contact.setLastName("Ponomarev");
-        contact.setPhoneNumber("89134714748");
+        Contact firstContact = new Contact();
+        firstContact.setId(getNewId());
+        firstContact.setFirstName("Jean");
+        firstContact.setLastName("Ponomarev");
+        firstContact.setPhoneNumber("89134714748");
 
-        contactList.add(contact);
+        contactList.add(firstContact);
+
+        Contact secondContact = new Contact();
+
+        secondContact.setId(getNewId());
+        secondContact.setFirstName("John");
+        secondContact.setLastName("Doe");
+        secondContact.setPhoneNumber("3469755");
+
+        contactList.add(secondContact);
+
+        Contact thirdContact = new Contact();
+
+        thirdContact.setId(getNewId());
+        thirdContact.setFirstName("Ivan");
+        thirdContact.setLastName("Ivanov");
+        thirdContact.setPhoneNumber("35723399");
+
+        contactList.add(thirdContact);
     }
 
     private int getNewId() {
@@ -28,8 +46,16 @@ public class ContactDao {
         return contactList;
     }
 
-    public void add(Contact contact) {
+    public void addContact(Contact contact) {
         contact.setId(getNewId());
         contactList.add(contact);
+    }
+
+    public void deleteContact(Contact targetContact) {
+        contactList.remove(targetContact);
+    }
+
+    public void deleteContactList(List<Contact> targetContacts) {
+        contactList.removeAll(targetContacts);
     }
 }

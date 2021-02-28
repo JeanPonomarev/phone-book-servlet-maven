@@ -15,7 +15,6 @@ import java.nio.charset.Charset;
 import java.util.stream.Collectors;
 
 public class AddContactServlet extends HttpServlet {
-
     private static final long serialVersionUID = -1870327806654358823L;
 
     private ContactService contactService = PhoneBook.contactService;
@@ -23,9 +22,7 @@ public class AddContactServlet extends HttpServlet {
     private ContactValidationConverter contactValidationConverter = PhoneBook.contactValidationConverter;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-
         try (OutputStream outputStream = response.getOutputStream()) {
-
             String contactJson = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
             Contact contact = contactConverter.convertFromJson(contactJson);

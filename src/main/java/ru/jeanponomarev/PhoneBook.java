@@ -6,7 +6,6 @@ import ru.jeanponomarev.dao.ContactDao;
 import ru.jeanponomarev.service.ContactService;
 
 public class PhoneBook {
-
     public static ContactDao contactDao = new ContactDao();
 
     public static ContactService contactService = new ContactService();

@@ -15,6 +15,16 @@
         <servlet-class>ru.jeanponomarev.servlet.AddContactServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>DeleteContactServlet</servlet-name>
+        <servlet-class>ru.jeanponomarev.servlet.DeleteContactServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>DeleteContactListServlet</servlet-name>
+        <servlet-class>ru.jeanponomarev.servlet.DeleteContactListServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>getAllContactsServlet</servlet-name>
         <url-pattern>/api/getContacts</url-pattern>
@@ -23,5 +33,15 @@
     <servlet-mapping>
         <servlet-name>AddContactServlet</servlet-name>
         <url-pattern>/api/addContact</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DeleteContactServlet</servlet-name>
+        <url-pattern>/api/deleteContact</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DeleteContactListServlet</servlet-name>
+        <url-pattern>/api/deleteContactList</url-pattern>
     </servlet-mapping>
 </web-app>
